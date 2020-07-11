@@ -1,5 +1,8 @@
 # Discord-bot
 
+
+# Basic-discord-bot Bench This is a bench no longer in use, currently transitioning into Commendo version of the code.
+
 Casual Basi Music Playing bot.
 
 ## Bot Info
