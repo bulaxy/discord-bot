@@ -35,15 +35,16 @@ There are many discord bot, this, is no special. I am trying to develop a bot fo
 `npm i`
 
 
-2. Create `config.json` with like the following, you can customise your prefix here.
+2. Create `config.js` with like the following, you can customise your prefix here.
 
 ```
-{
-	"TOKEN":"xxxxx",
-	"GENIUSAPIKEY":"xxxxx",
-	"PREFIX": "!",
-	"AUDIO_QUALITY":"lowest", 
+module.exports = {
+	TOKEN:'xxxxx',
+	GENIUSAPIKEY:'xxxx',
+	PREFIX: '!',
+	AUDIO_QUALITY:'lowest', 
 }
+
 ```
 
 
