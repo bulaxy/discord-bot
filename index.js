@@ -4,7 +4,8 @@ const { Structures } = require('discord.js');
 const config = require('./config.json')
 _ = require('lodash');
 moment = require('moment');
-helpers = require('./helper')
+helpers = require('./helper');
+configs = require('./config.json')
 //Structure for Music Bot (Per Guild)
 Structures.extend('Guild', function (Guild) {
 	class MusicGuild extends Guild {

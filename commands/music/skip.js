@@ -13,7 +13,7 @@ module.exports = class SkipCommand extends Command {
 					key: 'index',
 					prompt: 'Which Song do you want to skip?',
 					type: 'integer',
-					default: '-1'
+					default: -1
 				},
 			],
 		});

@@ -3,10 +3,10 @@ const { Command } = require('discord.js-commando');
 module.exports = class ClearCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'claer',
+			name: 'clear',
 			group: 'music',
-			memberName: 'claer',
-			description: 'Claer Music',
+			memberName: 'clear',
+			description: 'clear Music',
 			guildOnly: true,
 		});
 	}

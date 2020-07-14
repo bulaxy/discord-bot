@@ -25,7 +25,7 @@ module.exports = class PlayCommand extends Command {
 		});
 	}
 
-	run(message) {
+	async run(message, { query }) {
 		if (!message.member.voice.channel) { //check user voice channel
 			// message.say(CONSTANTSTEXT.MUST_JOIN_VOICE_CHANNEL)
 			message.say('not in voice chanel')
@@ -55,25 +55,21 @@ module.exports = class PlayCommand extends Command {
 		}
 		console.log("***** received Play, loading basic Info")
 		var basicInfo = await ytdl.getBasicInfo(ytl) //get basic info,
-		server.queue.push({ //add to queue
+		message.guild.musicData.queue.push({ //add to queue
 			url: ytl,
 			title: basicInfo.player_response.videoDetails.title,
 			lengthSecond: basicInfo.player_response.videoDetails.lengthSeconds,
 		})
-
-		if (!isInVoiceChannel(message)) { //if not in voice channel, start the play function 
-			console.log("***** Joining Voice Channel")
+		if (message.guild.musicData.nowPlaying) { //if already playing, 
+			// message.say(CONSTANTSTEXT.ADD_TO_QUEUE)
+			message.say(`***** Added to Queue`)
+		}
+		if (_.isUndefined(message.guild.voice) || !message.guild.voice.channelID) { //if not in voice channel, start the play function 
 			message.member.voice.channel
 				.join()
 				.then(function (connection) {
 					PlayCommand.play(message)
 				})
-			break;
-		}
-		if (isDispatcherRunning(message)) { //if already playing, 
-			// message.say(CONSTANTSTEXT.ADD_TO_QUEUE)
-			console.log(`***** Added to Queue`)
-			break;
 		}
 	}
 
@@ -81,8 +77,9 @@ module.exports = class PlayCommand extends Command {
 		const classThis = this; // use classThis instead of 'this' because of lexical scope below
 		// var nextPlayingText = (_.isUndefined(server.queue[1])) ? "" : CONSTANTSTEXT.NEXT_SONG + server.queue[1].title //append next song.
 		// message.channel.send(CONSTANTSTEXT.NOW_PLAYING + server.queue[0].title + nextPlayingText)
-		message.guild.musicData.dispatcher = message.guild.voice.connection.play(ytdl(message.guild.musicData.queue[0].url, { quality: config.AUDIO_QUALITY, filter: "audioonly" })) //set dispatcher to the song received.
-		message.guild.musicData.nowPlaying = message.guild.musicData.queue.shift();	//Remove current song from queue and add it to currentSong
+		message.guild.musicData.dispatcher = message.guild.voice.connection.play(ytdl(message.guild.musicData.queue[0].url, { quality: 'lowest', filter: "audioonly" })) //set dispatcher to the song received.
+		message.guild.musicData.nowPlaying = true
+		message.guild.musicData.queue.shift();	//Remove current song from queue and add it to currentSong
 		message.guild.musicData.dispatcher.on("finish", function () { //Listen to when song finish.
 			if (message.guild.musicData.queue[0]) { //if queue is not empty, play the next song
 				classThis.play(message)

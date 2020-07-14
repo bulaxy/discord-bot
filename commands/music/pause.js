@@ -14,17 +14,14 @@ module.exports = class PauseCommand extends Command {
 	run(message) {
 		if (!message.guild.musicData.dispatcher) { //if not playing
 			message.say('No Song is playing')
-			break
 		} else if (message.guild.musicData.isPlaying) { //if playing and paused
 			message.guild.musicData.dispatcher.pause()
 			message.guild.musicData.isPlaying = false
 			// message.say(CONSTANTSTEXT.RESUMING)
-			message.say('Resuming')
-			break;
+			message.say('Pausing')
 		} else {
 			// message.say(CONSTANTSTEXT.ALREADY_PLAYING)
 			message.say('Already Paused')
-			break
 		}
 	}
 };
