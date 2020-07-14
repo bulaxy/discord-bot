@@ -4,7 +4,7 @@ const { Structures } = require('discord.js');
 const config = require('./config.json')
 _ = require('lodash');
 moment = require('moment');
-
+helpers = require('./helper')
 //Structure for Music Bot (Per Guild)
 Structures.extend('Guild', function (Guild) {
 	class MusicGuild extends Guild {
@@ -44,6 +44,7 @@ client.registry
 	.registerDefaultTypes()
 	.registerGroups([
 		['general', 'General Command Group'],
+		['music', 'Music Command Group'],
 		['todo', 'Todo List Command Group'],
 		['reminder', 'Reminder Command Group'],
 	])

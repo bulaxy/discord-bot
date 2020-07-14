@@ -1,4 +1,3 @@
-const Discord = require('discord.js');
 const { Command } = require('discord.js-commando');
 
 module.exports = class DiceCommand extends Command {
