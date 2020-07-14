@@ -3,6 +3,8 @@ const path = require('path');
 const { Structures } = require('discord.js');
 const config = require('./config.json')
 _ = require('lodash');
+moment = require('moment');
+
 //Structure for Music Bot (Per Guild)
 Structures.extend('Guild', function (Guild) {
 	class MusicGuild extends Guild {
@@ -13,7 +15,20 @@ Structures.extend('Guild', function (Guild) {
 				isPlaying: false,
 				nowPlaying: null,
 				songDispatcher: null,
-				volume: 1
+				loop: false
+			};
+			this.todo = {
+				list: [],
+			};
+			this.reminderList = {
+				events: [],
+			};
+			this.aaaaa = {
+				queue: [],
+				isPlaying: false,
+				nowPlaying: null,
+				songDispatcher: null,
+				loop: false
 			};
 		}
 	}
@@ -25,22 +40,34 @@ const client = new CommandoClient({
 	owner: config.OWNERID,
 });
 
-//On Ready function
-client.once('ready', () => {
-	console.log(`Bot Raedy, Logged in as ${client.user.tag}! (${client.user.id})`);
-});
-
-client.login(config.TOKEN);
-
-client.on('error', console.error);
-
 client.registry
 	.registerDefaultTypes()
 	.registerGroups([
-		['first', 'Your First Command Group'],
+		['general', 'General Command Group'],
+		['todo', 'Todo List Command Group'],
+		['reminder', 'Reminder Command Group'],
 	])
-	.registerDefaultGroups()
+	.registerDefaultGroups({
+		Commands: false,
+		Utility: false
+	})
 	.registerDefaultCommands({
-		help: false,
 	})
 	.registerCommandsIn(path.join(__dirname, 'commands'));
+
+//On Ready function
+client.once('ready', () => {
+	console.log(`Online...`);
+});
+
+client.on('guildMemberAdd', member => {
+
+});
+
+client.on('error', console.error);
+
+client.login(config.TOKEN);
+
+		// ['music', 'Music Command Group'],
+		// ['todo', 'Todo List Command Group'],
+		// ['reminder', 'Reminder Command Group'],
