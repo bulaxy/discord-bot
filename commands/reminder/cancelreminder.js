@@ -1,7 +1,6 @@
 const { Command } = require('discord.js-commando');
-const Discord = require('discord.js');
 
-module.exports = class cancelreminder extends Command {
+module.exports = class CancelReminderCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'cancelreminder',

@@ -1,8 +1,7 @@
 const { Command } = require('discord.js-commando');
-const Discord = require('discord.js');
-const { times } = require('lodash');
+const { MessageEmbed } = require('discord.js');
 
-module.exports = class checkreminder extends Command {
+module.exports = class CheckReminderCommand extends Command {
 	constructor(client) {
 		super(client, {
 			name: 'checkreminder',
@@ -26,18 +25,18 @@ module.exports = class checkreminder extends Command {
 
 	run(message, { group }) {
 		var list = (group == 'all') ? message.guild.reminderList.events : message.guild.reminderList.events.filter(event => event.group == group)
-		const checkReminderEmbed = new Discord.MessageEmbed()
+		const embedText = new MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle((group == 'all') ? 'All events' : name)
 		if (list.length == 0) {
-			checkReminderEmbed.addField('No events', ' - ')
+			embedText.addField('No events', ' - ')
 		} else {
 			list.forEach(item => {
-				checkReminderEmbed
+				embedText
 					.addField(item.name + ' (' + item.eventDate.fromNow() + ')', item.description, false)
 			})
 		}
-		message.say(checkReminderEmbed)
+		message.say(embedText)
 	}
 };
 
