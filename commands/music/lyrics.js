@@ -1,7 +1,8 @@
 const { Command } = require('discord.js-commando');
 const cheerio = require('cheerio');
+const fetch = require('node-fetch');
 const headers = {
-	// Authorization: `Bearer ${config.GENIUSAPIKEY}`   //TODO:Config
+	Authorization: `Bearer ${configs.GENIUSAPIKEY}`
 };
 module.exports = class LyricsCommand extends Command {
 	constructor(client) {
@@ -22,7 +23,7 @@ module.exports = class LyricsCommand extends Command {
 		});
 	}
 
-	run(message, { songName }) {
+	async run(message, { songName }) {
 		if (songName == 'default') {
 			songName = message.guild.musicData.nowPlaying
 		} else {
@@ -45,24 +46,23 @@ module.exports = class LyricsCommand extends Command {
 				message.say(msg)
 			})
 		} catch (e) { console.log(e) }
+
+		async function getLyrics(url) { //get lyrics from external site. 
+			const response = await fetch(url); //went wrong on this fetch
+			const text = await response.text();
+			const $ = cheerio.load(text); //parse the from html to something more readable
+			return $('.lyrics')
+				.text()
+		}
+
+		function cutLyrics(lyrics) {  //Not the ideal way to do i,but since discord only allow 2000 char, need to cut them in smaller chunk... Require rework
+			if (lyrics[0].length > 1500) {
+				lyrics.push(lyrics[0].substring(0, 1500))
+				lyrics[0] = lyrics[0].substring(1500)
+				return cutLyrics(lyrics)
+			}
+			lyrics.push(lyrics.shift())
+			return lyrics
+		}
 	}
 };
-
-
-async function getLyrics(url) { //get lyrics from external site. 
-	const response = await fetch(url);
-	const text = await response.text();
-	const $ = cheerio.load(text); //parse the from html to something more readable
-	return $('.lyrics')
-		.text()
-}
-
-function cutLyrics(lyrics) {  //Not the ideal way to do i,but since discord only allow 2000 char, need to cut them in smaller chunk... Require rework
-	if (lyrics[0].length > 1500) {
-		lyrics.push(lyrics[0].substring(0, 1500))
-		lyrics[0] = lyrics[0].substring(1500)
-		return cutLyrics(lyrics)
-	}
-	lyrics.push(lyrics.shift())
-	return lyrics
-}
