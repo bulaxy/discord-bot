@@ -1,0 +1,16 @@
+{
+	"play": "play",
+	"play_prompt": "Please add either a youtube link / youtube playlist or a song name",
+	"play_description": "Use Play to play songs!",
+	"now_playing_title": "Now Playing",
+	"searching_for_song": "Searching for the song",
+	"user_not_in_voice_channel": "User not in a voice channel",
+	"searching_for_playlist": "Searching for a playlist, might take longer...",
+	"added_to_queue": "Song have been added to queue",
+	"no_song_in_queue": "No Song in Queue... Exiting Voice Channel",
+	"now_play_title":"Now Playing -- ",
+	"queue":"queue",
+	"queue_description":"Use Queue to see the next 5 song in the queue",
+	"queue_title":"Next 5 - ",
+	
+}
