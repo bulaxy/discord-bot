@@ -1,21 +1,21 @@
 const { Command } = require('discord.js-commando');
 const { MessageEmbed } = require('discord.js');
+const MUSIC_CONSTANTS = require('../../botmessagers/music.json')
 
 module.exports = class QueueCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'queue',
+			name: MUSIC_CONSTANTS.queue,
 			group: 'music',
 			memberName: 'queue',
-			description: 'Queue',
+			description: MUSIC_CONSTANTS.queue_description,
 			guildOnly: true,
 		});
 	}
 
 	run(message) {
 		if (message.guild.musicData.queue.length == 0) {   //check if queue is empty, says it is empty
-			// message.say(CONSTANTSTEXT.EMPTY_QUEUE)
-			message.say('empty queue')
+			message.say(MUSIC_CONSTANTS.empty_queue)
 		} else {
 			const embedText = new MessageEmbed()
 			var queue = message.guild.musicData.queue, sumDuration = 0
@@ -31,8 +31,9 @@ module.exports = class QueueCommand extends Command {
 				sumDuration += queue[i].lengthSecond
 			}
 			embedText
-				.setTitle('Queue')
-				.setDescription(`${queue.length} in queue, total length of ${helpers.toHHMMSS(sumDuration)}`)
+				.setTitle(MUSIC_CONSTANTS.queue_title)
+				.setColor(CONSTANTS.embedColor)
+				.setDescription(queue.length + helpers.toHHMMSS(sumDuration))
 			message.say(embedText)
 		}
 	}

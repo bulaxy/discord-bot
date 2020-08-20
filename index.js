@@ -6,6 +6,7 @@ _ = require('lodash');
 moment = require('moment');
 helpers = require('./helper');
 configs = require('./config.json')
+CONSTANTS = require('./constants.json')
 //Structure for Music Bot (Per Guild)
 Structures.extend('Guild', function (Guild) {
 	class MusicGuild extends Guild {

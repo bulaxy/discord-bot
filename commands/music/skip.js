@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando');
-
+const MUSIC_CONSTANTS = require('../../botmessagers/music.json')
 module.exports = class SkipCommand extends Command {
 	constructor(client) {
 		super(client, {
@@ -13,7 +13,7 @@ module.exports = class SkipCommand extends Command {
 					key: 'index',
 					prompt: 'Which Song do you want to skip?',
 					type: 'integer',
-					default: -1
+					default: -1,
 				},
 			],
 		});
@@ -23,11 +23,9 @@ module.exports = class SkipCommand extends Command {
 		if (index === -1) {
 			if (message.guild.musicData.dispatcher) { //if not playing
 				message.guild.musicData.dispatcher.end()   //if dispatcher is defined, end it. can possible use isDispatcherRunning instead, dont think it will make a difference tho.
-				// message.say(CONSTANTSTEXT.STOPPED)
-				message.say('Skipped')
+				// message.say(CONSTANTSTEXT.STOPPED) //Do not need Skip Text since when it is skip, now playing text will appear.
 			} else {
-				nessage.say('No Song is playing')
-				// message.say(CONSTANTSTEXT.ALREADY_STOPPED)
+				// message.say(MUSIC_CONSTANTS.already_stopped) //Also dont need since if no song in queue, .end will happen
 			}
 		} else {
 			var removed = message.guild.musicData.queue.splice(index - 1, 1)

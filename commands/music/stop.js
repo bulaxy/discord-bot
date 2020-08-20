@@ -13,14 +13,15 @@ module.exports = class StopCommand extends Command {
 	}
 
 	run(message) {
-		if (message.guild.musicData.dispatcher) { //if not playing
+		if (message.guild.musicData.nowPlaying) { //if not playing
 			message.guild.musicData.queue = []
-			message.guild.musicData.dispatcher.end()    //End dispatcher (!play function should receive .on('finish'))
-			// message.guild.voice.connection.disconnect() //Leave channel
+			message.guild.musicData.nowPlaying = null
+			message.guild.voice.connection.disconnect() //Leave channel
+			message.guild.musicData.dispatcher.end()    
 			// message.say(CONSTANTSTEXT.STOPPED)
 			message.say('Stopped')
-		}else{
-			nessage.say('No Song Playing')
+		} else {
+			message.say('No Song Playing')
 			// message.say(CONSTANTSTEXT.ALREADY_STOPPED)
 		}
 	}
