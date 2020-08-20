@@ -14,7 +14,6 @@ module.exports = class SkipCommand extends Command {
 					prompt: 'Which Song do you want to skip?',
 					type: 'integer',
 					default: -1,
-					validate: num => num == ,
 				},
 			],
 		});
