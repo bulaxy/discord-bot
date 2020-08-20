@@ -13,6 +13,7 @@ There are many discord bot, this, is no special. I am trying to develop a bot fo
 - Music Bot (Play, pause, stop, queue, lyrics etc)
 - Reminder (Direct Message you or targetted role)
 - Todo list
+- Covid Cases and news for Victoira, Ausralia.
 
 ## Set-UP 
 
