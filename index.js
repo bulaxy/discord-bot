@@ -7,6 +7,7 @@ moment = require('moment');
 helpers = require('./helper');
 configs = require('./config.json')
 CONSTANTS = require('./constants.json')
+global.fetch = require('node-fetch');
 //Structure for Music Bot (Per Guild)
 Structures.extend('Guild', function (Guild) {
 	class MusicGuild extends Guild {
@@ -61,6 +62,7 @@ client.registry
 //On Ready function
 client.once('ready', () => {
 	console.log(`Online...`);
+	client.user.setActivity('',{type:'I am a stupid Chicken'});
 });
 
 client.on('guildMemberAdd', member => {
