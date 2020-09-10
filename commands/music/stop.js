@@ -1,13 +1,14 @@
 
 const { Command } = require('discord.js-commando');
+const MUSIC_CONSTANTS = require('../../botmessagers/music.json')
 
 module.exports = class StopCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'stop',
+			name: MUSIC_CONSTANTS.stop_command,
 			group: 'music',
 			memberName: 'stop',
-			description: 'Stop Music',
+			description: MUSIC_CONSTANTS.stop_description,
 			guildOnly: true,
 		});
 	}
@@ -18,10 +19,9 @@ module.exports = class StopCommand extends Command {
 			message.guild.musicData.nowPlaying = null
 			message.guild.voice.connection.disconnect() //Leave channel
 			message.guild.musicData.dispatcher.end()    
-			// message.say(CONSTANTSTEXT.STOPPED)
-			message.say('Stopped')
+			message.say(MUSIC_CONSTANTS.stopped)
 		} else {
-			message.say('No Song Playing')
+			message.say(MUSIC_CONSTANTS.no_song_is_playing)
 			// message.say(CONSTANTSTEXT.ALREADY_STOPPED)
 		}
 	}

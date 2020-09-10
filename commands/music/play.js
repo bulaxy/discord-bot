@@ -7,7 +7,7 @@ const MUSIC_CONSTANTS = require('../../botmessagers/music.json')
 module.exports = class PlayCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: MUSIC_CONSTANTS.play,
+			name: MUSIC_CONSTANTS.play_command,
 			group: 'music',
 			memberName: 'play',
 			description: MUSIC_CONSTANTS.play_description,
@@ -34,31 +34,41 @@ module.exports = class PlayCommand extends Command {
 		}
 		const sentMsg = await message.say(MUSIC_CONSTANTS.searching_for_song)
 		var ytls = []
-
-		switch (true) {
-			case (query.includes('.com/playlist')): //If it is a playlist
-				// sentMessage.edit(MUSIC_CONSTANT.searching_for_playlist);
-				sentMsg.edit('playlist might take longer');
-				var ytplInfo = await ytpl(query)
-				ytplInfo.items.forEach(item => ytls.push(item.url))
-				break;
-			case ((!query.includes('https://') && !query.includes('http://'))): //If it is a search request
-				var ytsrInfo = await ytsr(query)
-				ytls.push(ytsrInfo.items.find(item => item.type == 'video').link)
-				break;
-			default:
-				ytls = [query]
-		}
-		for (var i = 0; i < ytls.length; i++) {
-			var basicInfo = await ytdl.getBasicInfo(ytls[i]) //get basic info,
+		try {
+			switch (true) {
+				case (query.includes('.com/playlist')): //If it is a playlist
+					// sentMessage.edit(MUSIC_CONSTANT.searching_for_playlist);
+					sentMsg.edit('playlist might take longer');
+					var ytplInfo = await ytpl(query)
+					ytplInfo.items.forEach(item => ytls.push(item.url))
+					break;
+				case ((!query.includes('https://') && !query.includes('http://'))): //If it is a search request
+					var ytsrInfo = await ytsr(query)
+					ytls.push(ytsrInfo.items.find(item => item.type == 'video').link)
+					break;
+				default:
+					ytls = [query]
+			}
+			var basicInfo = await ytdl.getBasicInfo(ytls[0])
 			message.guild.musicData.queue.push({ //add to queue
-				url: ytls[i],
+				url: ytls[0],
 				title: basicInfo.player_response.videoDetails.title,
 				lengthSecond: basicInfo.player_response.videoDetails.lengthSeconds,
 				thumbnail: basicInfo.player_response.videoDetails.thumbnail.thumbnails[0].url,
 				details: basicInfo.player_response.videoDetails, //in case, for future use or reference
 			})
+		} catch (e) {
+			message.reply(MUSIC_CONSTANTS.fail_to_search_song)
 		}
+		//get the first song only, reduce wait time
+		var basicInfo = await ytdl.getBasicInfo(ytls[0])
+		message.guild.musicData.queue.push({ //add to queue
+			url: ytls[0],
+			title: basicInfo.player_response.videoDetails.title,
+			lengthSecond: basicInfo.player_response.videoDetails.lengthSeconds,
+			thumbnail: basicInfo.player_response.videoDetails.thumbnail.thumbnails[0].url,
+			details: basicInfo.player_response.videoDetails, //in case, for future use or reference
+		})
 
 		if (_.isUndefined(message.guild.voice) || _.isNull(message.guild.voice.channelID) || !message.guild.musicData.isPlaying) { //if already playing, 
 			//if not in voice channel, start the play function 
@@ -67,6 +77,20 @@ module.exports = class PlayCommand extends Command {
 				.then(() => PlayCommand.play(message, sentMsg))
 		} else {
 			sentMsg.edit(MUSIC_CONSTANTS.added_to_queue)
+		}
+		//if more than 1 song, load in the other songs
+		if (ytls.length > 0) {
+			for (var i = 1; i < ytls.length; i++) {
+				//Not sure how to primus.all
+				var basicInfo = await ytdl.getBasicInfo(ytls[0]) //get basic info,
+				message.guild.musicData.queue.push({ //add to queue
+					url: ytls[i],
+					title: basicInfo.player_response.videoDetails.title,
+					lengthSecond: basicInfo.player_response.videoDetails.lengthSeconds,
+					thumbnail: basicInfo.player_response.videoDetails.thumbnail.thumbnails[0].url,
+					details: basicInfo.player_response.videoDetails, //in case, for future use or reference
+				})
+			}
 		}
 	}
 

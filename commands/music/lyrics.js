@@ -51,8 +51,7 @@ module.exports = class LyricsCommand extends Command {
 			const response = await fetch(url); //went wrong on this fetch
 			const text = await response.text();
 			const $ = cheerio.load(text); //parse the from html to something more readable
-			return $('.lyrics')
-				.text()
+			return $('.lyrics').text()
 		}
 
 		function cutLyrics(lyrics) {  //Not the ideal way to do i,but since discord only allow 2000 char, need to cut them in smaller chunk... Require rework

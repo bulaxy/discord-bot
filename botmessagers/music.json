@@ -1,5 +1,5 @@
 {
-	"play": "play",
+	"play_command": "play",
 	"play_prompt": "Please add either a youtube link / youtube playlist or a song name",
 	"play_description": "Use Play to play songs!",
 	"now_playing_title": "Now Playing",
@@ -12,5 +12,25 @@
 	"queue":"queue",
 	"queue_description":"Use Queue to see the next 5 song in the queue",
 	"queue_title":"Next 5 - ",
-	
+	"fail_to_search_song":"Fail to search for the playlist/song",
+	"no_song_is_playing":"No Song is playing",
+	"pause_command":"pause",
+	"pause_description": "Use Pause to pause the music bot",
+	"paused":"Already Paused",
+	"clear_command":"clear",
+	"clear_description": "Use clear to clear queue",
+	"no_song_for_clear":"No song in queue to be cleared",
+	"cleared":"Cleared",
+	"stop_command":"stop",
+	"stop_description":"Stop the music bot",
+	"stopped":"Stopped",
+	"skip_command":"skip",
+	"skip_description":"Skipping either current song or the specific song in the queue",
+	"skip_prompt":"Wich song do you want to skip? Enter a number",
+	"song_removed":"have been removed",
+	"no_song_position":"No Song is on that position",
+	"resume_command":"resume",
+	"resume_description":"Resume Bot music playing",
+	"resuming":"resuming",
+	"already_playng":"Already playing"
 }

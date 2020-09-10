@@ -24,7 +24,7 @@ module.exports = class CancelReminderCommand extends Command {
 	run(message, { name }) {
 		var i = _.findIndex(message.guild.reminderList.events, item => item.name == name)
 		if (i == -1) {
-			message.say('reminder not found')
+			message.say('Reminder not found')
 		} else {
 			if (message.guild.reminderList.events[i].canceled == true) {
 				message.say('Reminder already canceled')

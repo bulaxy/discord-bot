@@ -1,27 +1,25 @@
 const { Command } = require('discord.js-commando');
+const MUSIC_CONSTANTS = require('../../botmessagers/music.json')
 
 module.exports = class PauseCommand extends Command {
 	constructor(client) {
 		super(client, {
-			name: 'pause',
+			name: MUSIC_CONSTANTS.pause_command,
 			group: 'music',
 			memberName: 'pause',
-			description: 'Pause Music',
+			description: MUSIC_CONSTANTS.pause_description,
 			guildOnly: true,
 		});
 	}
-
 	run(message) {
 		if (!message.guild.musicData.dispatcher) { //if not playing
-			message.say('No Song is playing')
-		} else if (message.guild.musicData.isPlaying) { //if playing and paused
+			message.say(MUSIC_CONSTANTS.no_song_is_playing)
+		} else if (message.guild.musicData.isPlaying) { //if playing and paused 
 			message.guild.musicData.dispatcher.pause()
 			message.guild.musicData.isPlaying = false
-			// message.say(CONSTANTSTEXT.RESUMING)
-			message.say('Pausing')
+			message.say(MUSIC_CONSTANTS.pausing)
 		} else {
-			// message.say(CONSTANTSTEXT.ALREADY_PLAYING)
-			message.say('Already Paused')
+			message.say(MUSIC_CONSTANTS.paused)
 		}
 	}
 };

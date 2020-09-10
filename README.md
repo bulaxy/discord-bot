@@ -1,8 +1,6 @@
 # Discord-bot
 
-Casual Basic Music Playing bot.
-
-This Bot currently paused in development because my Raspberry Pi Zero server is not competitable with Node V12, so some features was not able to be deploy correctly. 
+Casual Basi Music Playing bot.
 
 ## Bot Info
 
