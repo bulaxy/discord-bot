@@ -17,6 +17,7 @@
 	"pause_command":"pause",
 	"pause_description": "Use Pause to pause the music bot",
 	"paused":"Already Paused",
+	"pausing":"Pausing",
 	"clear_command":"clear",
 	"clear_description": "Use clear to clear queue",
 	"no_song_for_clear":"No song in queue to be cleared",

@@ -2,6 +2,7 @@ const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 const { Structures } = require('discord.js');
 const config = require('./config.json')
+const welcomeMessage = require('./botmessagers/welcomeMessage')
 _ = require('lodash');
 moment = require('moment');
 helpers = require('./helper');
@@ -10,7 +11,7 @@ CONSTANTS = require('./constants.json')
 global.fetch = require('node-fetch');
 //Structure for Music Bot (Per Guild)
 Structures.extend('Guild', function (Guild) {
-	class MusicGuild extends Guild {
+	class GuildInfo extends Guild {
 		constructor(client, data) {
 			super(client, data);
 			this.musicData = {
@@ -26,20 +27,13 @@ Structures.extend('Guild', function (Guild) {
 			this.reminderList = {
 				events: [],
 			};
-			this.aaaaa = {
-				queue: [],
-				isPlaying: false,
-				nowPlaying: null,
-				songDispatcher: null,
-				loop: false
-			};
 		}
 	}
-	return MusicGuild;
+	return GuildInfo;
 });
 
 const client = new CommandoClient({
-	commandPrefix: '!',
+	commandPrefix: config.PREFIX,
 	owner: config.OWNERID,
 });
 
@@ -52,8 +46,8 @@ client.registry
 		['reminder', 'Reminder Command Group'],
 	])
 	.registerDefaultGroups({
-		Commands: false,
-		Utility: false
+		Commands: true,
+		Utility: true
 	})
 	.registerDefaultCommands({
 	})
@@ -62,12 +56,24 @@ client.registry
 //On Ready function
 client.once('ready', () => {
 	console.log(`Online...`);
-	client.user.setActivity('',{type:'I am a stupid Chicken'});
+	client.user.setActivity('', { type: 'I am a stupid Chicken' });
 });
 
-client.on('guildMemberAdd', member => {
 
-});
+//You can do this within server setting, but yolo
+// client.on('guildMemberAdd', member => {
+// 	if (config.doWelcomeMsg=="true") {
+// 		var msgText = welcomeMessage[Math.floor(Math.random() * welcomeMessage.length)]
+// 		try {
+// 			msgText = msgText.replace('XXX_NAME', `<@${member.user.id}>`)
+// 		} catch (e) {
+// 			msgText = `Welcome <@${member.user.id}>`
+// 		}
+// 		member.guild.channels.cache
+// 			.get(member.guild.systemChannelID)
+// 			.send(msgText)
+// 	}
+// });
 
 client.on('error', console.error);
 
