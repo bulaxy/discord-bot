@@ -34,6 +34,14 @@ There are many discord bot, this, is no special. I am trying to develop a bot fo
 
 `npm i`
 
+On Debian / Ubuntu:
+
+`sudo apt-get install ffmpeg`
+
+On Windows:
+
+`npm install ffmpeg-static --save`
+
 
 2. Create `config.json` with like the following, you can customise your prefix here.
 
