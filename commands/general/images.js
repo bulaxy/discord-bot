@@ -2,7 +2,7 @@ const { Command } = require('discord.js-commando');
 const Unsplash = require('unsplash-js').default;
 const { toJson } = require('unsplash-js');
 const Discord = require('discord.js');
-const unsplash = new Unsplash({ accessKey: configs.UNSLASH_ACCESS_KEY });
+const unsplash = new Unsplash({ accessKey: CONFIGS.UNSLASH_ACCESS_KEY });
 module.exports = class CovidCommand extends Command {
 	constructor(client) {
 		super(client, {

@@ -1,13 +1,15 @@
 const { CommandoClient } = require('discord.js-commando');
 const path = require('path');
 const { Structures } = require('discord.js');
-const config = require('./config.json')
-const welcomeMessage = require('./botmessagers/welcomeMessage')
+const fs = require('fs');
+const welcomeMessage = require('./botmessagers/welcomeMessage');
+const publicIp = require('public-ip');
+var numAttempt = 0;
 _ = require('lodash');
 moment = require('moment');
 helpers = require('./helper');
-configs = require('./config.json')
-CONSTANTS = require('./constants.json')
+CONFIGS = require('./config.json');
+CONSTANTS = require('./constants.json');
 global.fetch = require('node-fetch');
 //Structure for Music Bot (Per Guild)
 Structures.extend('Guild', function (Guild) {
@@ -32,9 +34,9 @@ Structures.extend('Guild', function (Guild) {
 	return GuildInfo;
 });
 
-const client = new CommandoClient({
-	commandPrefix: config.PREFIX,
-	owner: config.OWNERID,
+client = new CommandoClient({
+	commandPrefix: CONFIGS.PREFIX,
+	owner: CONFIGS.OWNERID,
 });
 
 client.registry
@@ -55,14 +57,21 @@ client.registry
 
 //On Ready function
 client.once('ready', () => {
-	console.log(`Online...`);
+	console.log(`Online... numAttempt ${numAttempt}`);
+	try {
+		clearInterval(setUpConnection);
+	} catch (e) {
+		// console.error(e)
+	}
 	client.user.setActivity('', { type: 'I am a stupid Chicken' });
+	compareIp()
+	setInterval(compareIp, 900000)
 });
 
 
 //You can do this within server setting, but yolo
 // client.on('guildMemberAdd', member => {
-// 	if (config.doWelcomeMsg=="true") {
+// 	if (CONFIGS.doWelcomeMsg=="true") {
 // 		var msgText = welcomeMessage[Math.floor(Math.random() * welcomeMessage.length)]
 // 		try {
 // 			msgText = msgText.replace('XXX_NAME', `<@${member.user.id}>`)
@@ -77,8 +86,26 @@ client.once('ready', () => {
 
 client.on('error', console.error);
 
-client.login(config.TOKEN);
+var setUpConnection = setInterval(function(){
+	console.log('Connection Attempt')
+	client.login(CONFIGS.TOKEN)
+	numAttempt = numAttempt++
+}, 60000)
+client.login(CONFIGS.TOKEN)
 
-		// ['music', 'Music Command Group'],
-		// ['todo', 'Todo List Command Group'],
-		// ['reminder', 'Reminder Command Group'],
+
+async function compareIp() {
+	var newip = await publicIp.v4()
+	fs.readFile(CONFIGS.IPFilePath, 'utf-8', function (err, data) {
+		if (err)
+			return console.log(err);
+		if (data != newip) {
+			client.users.fetch(CONFIGS.OWNERID).then(function (user) { user.send('Ip changed:' + newip) })
+			fs.writeFile(CONFIGS.IPFilePath, newip, { encoding: 'utf-8' }, function (err, data) {
+				if (err)
+					console.error(err)
+			});
+		}
+	});
+
+}

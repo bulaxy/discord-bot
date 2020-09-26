@@ -2,3 +2,4 @@ config.json
 node_modules/
 .vscode/launch.json
 install.js
+localstore/ip

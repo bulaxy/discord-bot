@@ -2,7 +2,7 @@ const { Command } = require('discord.js-commando');
 const cheerio = require('cheerio');
 const fetch = require('node-fetch');
 const headers = {
-	Authorization: `Bearer ${configs.GENIUSAPIKEY}`
+	Authorization: `Bearer ${CONFIGS.GENIUSAPIKEY}`
 };
 module.exports = class LyricsCommand extends Command {
 	constructor(client) {
